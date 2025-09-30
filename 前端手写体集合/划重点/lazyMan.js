@@ -1,61 +1,55 @@
-class lazyMan {
+class LazyMan {
   constructor(name) {
-    this.name = name;
     this.tasks = [];
+    this.name = name;
     this.sayHi();
-    setTimeout(() => {
-      this.next();
-    }, 0);
+    Promise.resolve().then(() => this.run());
   }
-
-  sayHi(name) {
-    const task = () => {
-      console.log(`Hi! This is ${this.name}`);
-      this.next();
+  _execu(fn, delay = 0, isUnshift = false) {
+    const promise = async () => {
+      delay ? await new Promise((resolve) => setTimeout(resolve, delay * 1000)) : null;
+      await fn();
     };
-    this.tasks.push(task);
+    this.tasks[isUnshift ? 'unshift' : 'push'](promise);
     return this;
   }
-
-  sleep(time) {
-    const task = () => {
-      setTimeout(() => {
-        console.log(`Wake up after ${time / 1000} seconds`);
-        this.next();
-      }, time * 1000);
+  sayHi() {
+    const fn = () => {
+      console.log(`Hi I'm ${this.name}`);
     };
-    this.tasks.push(task);
-    return this;
+    return this._execu(fn);
   }
-
-  sleepFirst(time) {
-    const task = () => {
-      setTimeout(() => {
-        console.log(`Wake up after ${time / 1000} seconds`);
-        this.next();
-      }, time);
-    };
-    this.tasks.unshift(task);
-    return this;
-  }
-
   eat(food) {
-    const task = () => {
-      console.log(`Eat ${food}`);
-      this.next();
+    const fn = function () {
+      console.log(`Im eating ${food}`);
     };
-    this.tasks.push(task);
-    return this;
+    return this._execu(fn);
   }
-
-  next() {
-    const task = this.tasks.shift();
-    task && task();
+  sleep(time) {
+    const fn = function () {
+      console.log(`wait ${time} second`);
+    };
+    return this._execu(fn, time);
+  }
+  sleepFirst(time) {
+    const fn = function () {
+      console.log(`wait ${time} second`);
+    };
+    return this._execu(fn, time, true);
+  }
+  run() {
+    if (this.tasks.length) {
+      const task = this.tasks.shift();
+      task().then(() => this.run());
+    }
   }
 }
 
-function LazyMan(name) {
-  return new lazyMan(name);
-}
-
-LazyMan('jj').sleepFirst(2).eat('lunch').sleep(5).eat('dinner').sleep(3).eat('supper');
+new LazyMan('Hank')
+  .sleep(1)
+  .eat('dinner')
+  .sleepFirst(2)
+  .eat('supper')
+  .sleep(3)
+  .eat('breakfast')
+  .sleepFirst(4);

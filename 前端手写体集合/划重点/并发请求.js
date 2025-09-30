@@ -74,9 +74,11 @@ const arr = new PromisePool(
       return request2();
     } else if (url === 'url3') {
       return request3();
+    } else {
+      return request1();
     }
   },
-  ['url1', 'url2', 'url3']
+  ['url1', 'url2', 'url3', 'url4']
 );
 
 arr.start();
