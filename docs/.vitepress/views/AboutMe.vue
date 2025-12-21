@@ -17,12 +17,12 @@
         >
           🎵 二进制吟游诗人
         </p>
-        <p
+        <!-- <p
           style="top: 50%"
           class="tag-bounce absolute hidden rounded-full px-3 py-0.5 text-sm font-bold shadow-[0px_0px_1px_1px#eee] sm:left-[69%] sm:block md:left-[66%] lg:left-[63%] xl:left-[60%]"
         >
-          绿茵场最佳气氛组⚽
-        </p>
+          绿茵场最佳气氛组
+        </p> -->
         <!-- Left-tags -->
         <p
           style="top: 32%"
@@ -79,8 +79,8 @@
         >
           <p class="text-[12px]">简介</p>
           <div class="mt-2">
-            <h1 class="text-xl">主修计算机科学与技术</h1>
-            <h1 class="text-xl">辅修<span class="text-pink-500">猫娘行为学</span></h1>
+            <h1 class="text-xl">主修后端</h1>
+            <h1 class="text-xl">辅修<span class="text-pink-500">人工智能</span></h1>
             <h1 class="text-xl md:text-base lg:text-xl">梦想是做程序员烧烤领袖</h1>
             <p></p>
           </div>
@@ -206,8 +206,8 @@
           <div class="sport-bg absolute h-72 w-full bg-cover bg-center bg-no-repeat"></div>
           <div class="relative flex h-full flex-col justify-between p-4">
             <p class="text-[12px] text-slate-50">体育运动</p>
-            <h1 class="mt-2 flex-1 text-4xl font-bold text-white">足球</h1>
-            <p class="mt-2 self-end text-right text-sm text-slate-100">欢迎来到梅西走廊！</p>
+            <h1 class="mt-2 flex-1 text-4xl font-bold text-white">乒乓球</h1>
+            <p class="mt-2 self-end text-right text-sm text-slate-100">感受乒乓球的魅力-旋转！</p>
           </div>
         </div>
       </div>
@@ -230,7 +230,7 @@
   filter: brightness(0.8);
 }
 .sport-bg {
-  background-image: url('./img/sport.jpg');
+  background-image: url('./img/sport.png');
   filter: brightness(0.6);
 }
 .movie-bg {
