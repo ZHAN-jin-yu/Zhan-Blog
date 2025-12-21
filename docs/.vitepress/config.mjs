@@ -52,5 +52,7 @@ export default defineConfig({
   },
   markdown: {
     math: true
-  }
+  },
+  base: '/Zhan-Blog/'
+
 });
