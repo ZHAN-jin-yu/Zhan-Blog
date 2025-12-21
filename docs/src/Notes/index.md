@@ -5,30 +5,68 @@ hero:
   title: Blogs
   subTitle: 想吃巧克力抹茶千层蛋糕.
 types:
-  - name: 面经分享
+  - name: AI
     desc: |-
-      Interview experiences
-      26 届卑微前端求职记录
-    link: /Notes/Interviews/
+      AI 笔记
+      人工智能相关学习与实践
+    link: /Notes/AI/
+    icon: "\U0001F916"
+  - name: Java
+    desc: |-
+      Java 学习记录
+      后端与语言基础
+    link: /Notes/Java/
+    icon: ☕
+  - name: MQ
+    desc: |-
+      消息队列
+      MQ 相关知识整理
+    link: /Notes/MQ/
+    icon: "\U0001F4EC"
+  - name: 工作记录
+    desc: |-
+      Work notes
+      工作中的踩坑与总结
+    link: /Notes/work/
+    icon: "\U0001F4BC"
+  - name: 基础
+    desc: |-
+      计算机基础
+      打牢基础知识
+    link: /Notes/基础/
+    icon: "\U0001F4D6"
+  - name: 架构
+    desc: |-
+      系统架构
+      设计与实践
+    link: /Notes/架构/
+    icon: "\U0001F5FD"
+  - name: 站外文档
+    desc: |-
+      站外资料
+      收藏的外部文档
+    link: /Notes/站外文档/
+    icon: "\U0001F517"
+  - name: 简历
+    desc: |-
+      Resume
+      简历相关记录
+    link: /Notes/简历/
+    icon: "\U0001F4C4"
+  - name: 算法
+    desc: |-
+      Algorithms
+      刷题与算法笔记
+    link: /Notes/算法/
+    icon: "\U0001F9E0"
+  - name: 面经
+    desc: |-
+      Interview notes
+      面试经验与题目整理
+    link: /Notes/面经/
     icon: "\U0001F4DD"
-  - name: 学习笔记
-    desc: |-
-      Learning Notes
-      我那磕磕绊绊的开发之路
-    link: /Notes/Learning/
-    icon: "\U0001F3C3"
-  - name: 阅读笔记
-    desc: |-
-      Reading books
-      读书笔记
-    link: /Notes/Reading/
-    icon: "\ud83d\udcda"
-  - name: 随想杂文
-    desc: |-
-      Personal musings
-      总要有个写东西的地方
-    link: /Notes/Thoughts/
-updateTime: '2024-12-22 12:26'
+updateTime: '2025-12-21 18:26'
+tags: Notes
 ---
 
 <script setup>
