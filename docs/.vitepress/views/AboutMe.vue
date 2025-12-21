@@ -153,10 +153,10 @@
           <p class="text-[12px]">工作经历</p>
           <h1 class="mt-2 text-4xl font-bold">追风赶月</h1>
           <div class="mt-4 md:text-base lg:text-xl">
-            <p class="py-1">🌟 2025.2 广州 / 至真科技 / 后端开发</p>
-            <p class="py-1">🚗 2025.6 广州 / 希音信息技术有限公司 (SHEIN) / Java 开发</p>
-            <p class="py-1">🦄 2025.10 杭州 / 有赞 / Java开发</p>
             <p class="py-1">🎉 Now. 北京 / 字节跳动 tiktok feeds / 推荐架构</p>
+            <p class="py-1">🦄 2025.10 杭州 / 有赞 / Java开发</p>
+            <p class="py-1">🚗 2025.6 广州 / 希音信息技术有限公司 (SHEIN) / Java 开发</p>
+            <p class="py-1">🌟 2025.2 广州 / 至真科技 / 后端开发</p>
           </div>
         </div>
       </div>
