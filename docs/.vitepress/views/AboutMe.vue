@@ -48,7 +48,7 @@
             <h1 class="text-2xl font-bold lg:break-normal lg:break-words xl:text-3xl">
               A Chinese undergraduate From GPNU
             </h1>
-            <p class="text-slate-100">前端开发 🔥</p>
+            <p class="text-slate-100">后端开发 🔥</p>
           </div>
           <!-- 箴言 -->
           <div
