@@ -153,9 +153,10 @@
           <p class="text-[12px]">工作经历</p>
           <h1 class="mt-2 text-4xl font-bold">追风赶月</h1>
           <div class="mt-4 md:text-base lg:text-xl">
-            <p class="py-1">🦄 2025.12 杭州 / 杭州玳数科技-袋鼠云 / React</p>
-            <p class="py-1">🎉 Now. 北京 / 百度 SLG / Vue</p>
-            <!-- <p class="py-1">🚗 2024.2 北京 / Momenta / React</p> -->
+            <p class="py-1">🌟 2025.2 广州 / 至真科技 / 后端开发</p>
+            <p class="py-1">🚗 2025.6 广州 / 希音信息技术有限公司 (SHEIN) / Java 开发</p>
+            <p class="py-1">🦄 2025.10 杭州 / 有赞 / Java开发</p>
+            <p class="py-1">🎉 Now. 北京 / 字节跳动 tiktok feeds / 推荐架构</p>
           </div>
         </div>
       </div>
@@ -182,7 +183,7 @@
           <div class="relative z-10 flex h-full flex-col justify-between p-4">
             <p class="text-[12px] text-slate-50">电子竞技</p>
             <h1 class="mt-2 flex-1 text-4xl font-bold text-white">赛博种田 / FPS</h1>
-            <p class="mt-2 self-end text-right text-sm text-slate-100">守望先锋 / FarmTogether</p>
+            <p class="mt-2 self-end text-right text-sm text-slate-100">王者荣耀 / FarmTogether</p>
           </div>
         </div>
       </div>
@@ -196,7 +197,7 @@
             <p class="text-[12px] text-slate-50">兴趣爱好</p>
             <h1 class="mt-2 flex-1 text-4xl font-bold text-white">科幻 / <br />动漫影视剧</h1>
             <p class="mt-2 self-end text-right text-sm text-slate-100">
-              “不作恶,不快活！” ——《坏蛋联盟》
+              “我与天道抢妻魂，与岁月争稗修！” ——《仙逆》
             </p>
           </div>
         </div>
@@ -233,7 +234,7 @@
   filter: brightness(0.6);
 }
 .movie-bg {
-  background-image: url('./img/movie.jpg');
+  background-image: url('./img/movie.webp');
   filter: brightness(0.6);
 }
 .avatar-ping {
