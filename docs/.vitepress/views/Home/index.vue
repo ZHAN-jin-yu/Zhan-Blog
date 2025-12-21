@@ -9,10 +9,10 @@
         <div class="text-2xl font-bold sm:text-3xl">
           <span class="shake-hand inline-block">👋</span> Hi, I am
           <span class="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent"
-            >Ni0duann</span
+            >ZHAN</span
           >.
         </div>
-        <p class="mt-2 text-base sm:text-lg">GDOU / Frontend Developer</p>
+        <p class="mt-2 text-base sm:text-lg">GPNU / Backend Developer</p>
         <p class="mt-1 text-black/50">“Welcome to my blog”</p>
         <div class="mt-4 flex gap-4">
           <div
@@ -21,13 +21,13 @@
           >
             🎉 Welcome
           </div>
-          <div
+          <!-- <div
             @click="gotoGithub"
             class="button button-github relative inline-flex cursor-pointer rounded-full bg-white active:scale-95"
           >
             <RiGithubLine class="w-5" />
             Github
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ const returnToTopRef = ref<HTMLElement | null>(null);
 
 const router = useRouter();
 const gotoGithub = () => {
-  window.open('https://github.com/Ni0duann');
+  window.open('https://github.com/ZHAN');
 };
 
 onMounted(() => {

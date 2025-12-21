@@ -2,13 +2,13 @@ import { defineConfig } from 'vitepress';
 import { fileURLToPath, URL } from 'node:url';
 import { getSidebar } from './utils/getSidebar';
 export default defineConfig({
-  title: "Ni0duann's Blog",
-  titleTemplate: 'Ni0duann',
+  title: "ZHAN's Blog",
+  titleTemplate: 'ZHAN',
   // md 文件根目录
   srcDir: './src',
   lastUpdated: true,
   description:
-    "Ni0duann's tech blog: An undergraduate's journey through frontend development, sharing insights, tips, and experiences in web technologies.",
+    "ZHAN's tech blog: An undergraduate's journey through Backend development, sharing insights, tips, and experiences in web technologies.",
   head: [['link', { rel: 'icon', href: '/logo.png' }]],
   themeConfig: {
     logo: '/logo.png',
@@ -28,10 +28,10 @@ export default defineConfig({
       provider: 'local'
     },
     // 顶部导航栏左侧的社交平台跳转
-    socialLinks: [{ icon: 'github', link: 'https://github.com/Ni0duann' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/ZHAN' }],
     // 首页底部版权声明
     footer: {
-      copyright: 'Copyright © 2024-present Ni0duann'
+      copyright: 'Copyright © 2024-present ZHAN'
     },
     // 文章内导航栏标题
     outlineTitle: '导航栏'
@@ -52,7 +52,5 @@ export default defineConfig({
   },
   markdown: {
     math: true
-  },
-  base: '/Zhan-Blog/'
-
+  }
 });

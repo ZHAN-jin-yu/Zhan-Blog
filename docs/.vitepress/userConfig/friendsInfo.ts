@@ -12,7 +12,7 @@ export const friendsInfo: Friend[] = [
   {
     avatar:
       'https://avatars.githubusercontent.com/u/146628596?s=400&u=fa05f92d95a76a7cd6a01c05c86768e8c8a70243&v=4',
-    name: 'Ni0duann',
+    name: 'ZHAN',
     title: '努力努力再努力',
     tag: 'Front-End Developer',
     link: '欢迎交换友链！可参考此处信息',

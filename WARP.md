@@ -1,6 +1,6 @@
 ---
-updateTime: '2025-09-17 21:34'
-tags: Ni0duann-Blog
+updateTime: '2025-12-21 21:31'
+tags: zhan-blog
 ---
 # WARP.md
 
@@ -8,7 +8,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-This is a personal blog built with VitePress, featuring a custom Chinese theme and automated content management. The blog is written primarily in Chinese and focuses on frontend development experiences, interview notes, learning materials, and personal thoughts.
+This is a personal blog built with VitePress, featuring a custom Chinese theme and automated content management. The blog is written primarily in Chinese and focuses on Backend development experiences, interview notes, learning materials, and personal thoughts.
 
 ## Development Commands
 
@@ -100,7 +100,7 @@ du -sh docs/.vitepress/dist
 ### Content Structure
 - **Blog posts**: `docs/src/Notes/` with subdirectories:
   - `Interviews/` - Interview experiences and job hunting notes
-  - `Learning/` - Frontend learning notes
+  - `Learning/` - Backend learning notes
   - `Reading/` - Book reviews and reading notes
   - `Thoughts/` - Personal reflections
   - `work/` - Work-related content

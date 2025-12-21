@@ -46,7 +46,7 @@
           >
             <p class="text-lg text-slate-50">你好，很高兴认识你 👋</p>
             <h1 class="text-2xl font-bold lg:break-normal lg:break-words xl:text-3xl">
-              A Chinese undergraduate From GDOU
+              A Chinese undergraduate From GPNU
             </h1>
             <p class="text-slate-100">前端开发 🔥</p>
           </div>
