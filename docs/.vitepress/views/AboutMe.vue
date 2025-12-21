@@ -94,40 +94,83 @@
             <!-- TODO:封装ICON组件,抽离背景颜色与svg地址 -->
             <div class="icon-scroll flex w-fit gap-4">
               <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-green-100 p-4">
-                <img src="./img/vue.svg" alt="" />
+                <img src="./img/mysql.png" alt="" />
               </div>
               <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-sky-100 p-4">
-                <img src="./img/react.png" alt="" />
+                <img src="./img/redis.png" alt="" />
               </div>
               <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-red-100 p-4">
-                <img src="./img/html.svg" alt="" />
+                <img src="./img/rocketMq.png" alt="" />
               </div>
               <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-cyan-100 p-4">
-                <img src="./img/css.svg" alt="" />
+                <img src="./img/spring.webp" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-yellow-300 p-4">
-                <img class="rounded-lg" src="./img/js.webp" alt="" />
+                <img class="rounded-lg" src="./img/xxl-job.jpg" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-sky-100 p-4">
-                <img class="rounded-lg" src="./img/typescript.png" alt="" />
+                <img class="rounded-lg" src="./img/nacos.webp" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-teal-100 p-4">
-                <img src="./img/tailwind.svg" alt="" />
+                <img src="./img/kafka.png" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-purple-100 p-4">
-                <img class="rounded-lg" src="./img/vite.svg" alt="" />
+                <img class="rounded-lg" src="./img/Java.png" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-sky-400 p-4">
-                <img class="rounded-lg" src="./img/webpack.svg" alt="" />
+                <img class="rounded-lg" src="./img/langchain4j.png" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-yellow-200 p-4">
-                <img class="rounded-lg" src="./img/pinia.svg" alt="" />
+                <img class="rounded-lg" src="./img/skywalking.svg" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-gray-100 p-4">
-                <img class="rounded-lg" src="./img/nextjs.svg" alt="" />
+                <img class="rounded-lg" src="./img/prometheus.png" alt="" />
               </div>
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-green-100 p-4">
-                <img class="rounded-lg" src="./img/nuxt.png" alt="" />
+                <img class="rounded-lg" src="./img/mybatis.png" alt="" />
+              </div>
+
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-red-400 p-4">
+                <img class="rounded-lg" src="./img/git.svg" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-slate-100 p-4">
+                <img class="rounded-lg" src="./img/python.svg" alt="" />
+              </div>
+              <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-green-100 p-4">
+                <img src="./img/mysql.png" alt="" />
+              </div>
+              <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-sky-100 p-4">
+                <img src="./img/redis.png" alt="" />
+              </div>
+              <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-red-100 p-4">
+                <img src="./img/rocketMq.png" alt="" />
+              </div>
+              <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-cyan-100 p-4">
+                <img src="./img/spring.webp" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-yellow-300 p-4">
+                <img class="rounded-lg" src="./img/xxl-job.jpg" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-sky-100 p-4">
+                <img class="rounded-lg" src="./img/nacos.webp" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-teal-100 p-4">
+                <img src="./img/kafka.png" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-purple-100 p-4">
+                <img class="rounded-lg" src="./img/Java.png" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-sky-400 p-4">
+                <img class="rounded-lg" src="./img/langchain4j.png" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-yellow-200 p-4">
+                <img class="rounded-lg" src="./img/skywalking.svg" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-gray-100 p-4">
+                <img class="rounded-lg" src="./img/prometheus.png" alt="" />
+              </div>
+              <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-green-100 p-4">
+                <img class="rounded-lg" src="./img/mybatis.png" alt="" />
               </div>
 
               <div class="flex h-20 w-20 flex-shrink-0 justify-center rounded-lg bg-red-400 p-4">

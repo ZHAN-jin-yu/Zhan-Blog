@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .home {
-  --primary-color: #ff6086;
+  --primary-color: #609aff;
 }
 
 .button-github {

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="emojiBgRef"
-    class="absolute left-0 top-0 -z-[1] flex h-screen w-full flex-col gap-1 overflow-hidden bg-slate-50/95 dark:bg-slate-900"
+    class="absolute left-0 top-0 -z-[1] flex h-screen w-full flex-col gap-1 overflow-hidden bg-sky-100/95 dark:bg-sky-900"
   >
     <div
       class="emoji-line leading-10"
