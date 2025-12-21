@@ -59,13 +59,19 @@ types:
       刷题与算法笔记
     link: /Notes/算法/
     icon: "\U0001F9E0"
+  - name: 读书小记
+    desc: |-
+      Reading notes
+      读书摘录与心得
+    link: /Notes/读书小记/
+    icon: "\U0001F4DA"
   - name: 面经
     desc: |-
       Interview notes
       面试经验与题目整理
     link: /Notes/面经/
     icon: "\U0001F4DD"
-updateTime: '2025-12-21 18:26'
+updateTime: '2025-12-21 20:25'
 tags: Notes
 ---
 
