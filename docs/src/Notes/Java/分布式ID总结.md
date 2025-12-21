@@ -1,5 +1,5 @@
 ---
-updateTime: '2025-12-21 18:26'
+updateTime: '2025-12-21 20:33'
 tags: Java
 ---
 ## **分布式ID**
@@ -326,7 +326,6 @@ leaf.snowflake.enable=false
 #leaf.snowflake.port=
 ```
 
-启动leaf-server 模块的 LeafServerApplication项目就跑起来了 号段模式获取分布式自增ID的测试url ：http：//localhost：8080/api/segment/get/leaf-segment-test 监控号段模式：[http://localhost:8080/cache](http://localhost:8080/cache)
 
 #### **snowflake模式**
 Leaf的snowflake模式依赖于ZooKeeper，不同于原始snowflake算法也主要是在workId的生成上，Leaf中workId是基于ZooKeeper的顺序Id来生成的，每个应用在使用Leaf-snowflake时，启动时都会都在Zookeeper中生成一个顺序Id，相当于一台机器对应一个顺序节点，也就是一个workId。
@@ -337,7 +336,6 @@ leaf.snowflake.zk.address=127.0.0.1
 leaf.snowflake.port=2181
 ```
 
-snowflake模式获取分布式自增ID的测试url：[http://localhost:8080/api/snowflake/get/test](http://localhost:8080/api/snowflake/get/test)
 
 ## **9. 滴滴（Tinyid）**
 [**Tinyid**](https://mp.weixin.qq.com/s?__biz=MzU5ODUwNzY1Nw==&mid=2247485010&idx=1&sn=05a42b98839fe7fb9a6647540315177a&scene=21#wechat_redirect) 由滴滴开发，Github地址：[https://github.com/didi/tinyid](https://github.com/didi/tinyid)
