@@ -51,7 +51,8 @@ OpenAiChatModel model = OpenAiChatModel.builder()
 
 
 <h2 id="M4LN3">SpringBoot集成</h2>
-<font style="color:rgb(28, 30, 33);">LangChain4j Spring Boot 集成需要 Java 17 和 Spring Boot 3.2。</font>
+
+**LangChain4j Spring Boot 集成需要 Java 17 和 Spring Boot 3.2。**
 
 ```xml
 <dependency>
@@ -77,8 +78,7 @@ langchain4j.open-ai.chat-model.log-responses=true
 
 ```
 
-> <font style="color:rgb(57, 58, 52);background-color:rgb(246, 248, 250);">ChatLanguageModel 对象就会被放到Spring容器</font>
->
+> **ChatLanguageModel 对象就会被放到Spring容器**
 
 ```java
 @AiService
@@ -89,13 +89,12 @@ interface Assistant {
 }
 ```
 
-> <font style="color:rgb(57, 58, 52);background-color:rgb(246, 248, 250);">直接注入就可以使用</font>
+> **直接注入就可以使用**
 >
-> <font style="color:rgb(57, 58, 52);background-color:rgb(246, 248, 250);">@Autowired  
-</font><font style="color:rgb(57, 58, 52);background-color:rgb(246, 248, 250);">Assistant assistant;</font>
->
+> **@Autowired  
+Assistant assistant;**
 
-<h3 id="hh4OE"><font style="color:rgb(57, 58, 52);background-color:rgb(246, 248, 250);">流式响应</font></h3>
+<h3 id="hh4OE">流式响应</h3>
 
 ```java
 interface Assistant {
@@ -117,8 +116,8 @@ tokenStream
 <h1 id="6f0d599a">结构化输出</h1>
 
 > 要求大模型只能输出指定格式的数据（json）
-  注意只有部分模型支持: <font style="color:rgb(28, 30, 33);">OpenAI、Azure OpenAI、Google AI Gemini 和 Ollama 模型, 但是通义千问里面大多数模型都不支持</font>
-<font style="color:rgb(28, 30, 33);"></font><font style="color:rgb(28, 30, 33);">它在</font>**流式**处理模式下<font style="color:rgb(28, 30, 33);">不起作用</font>
+  注意只有部分模型支持: **OpenAI、Azure OpenAI、Google AI Gemini 和 Ollama 模型, 但是通义千问里面大多数模型都不支持**
+  **它在流式处理模式下不起作用**
 
 <h2 id="low-level-api">Low Level API</h2>
 
@@ -353,20 +352,16 @@ Response 2:
 
 
 
-<h1 id="f6adedba"><font style="color:rgb(28, 30, 33);">模型上下文协议 （MCP）</font></h1>
+<h1 id="f6adedba">模型上下文协议 （MCP）</h1>
 
 约定请求方式，返回值的类型 
 
+**该协议指定了两种类型的传输,这两种传输都受支持:**
 
++ **`HTTP`:客户端请求 SSE 通道以接收来自 server的工具url,然后通过 HTTP POST 请求发送命令。**
++ **`stdio`:客户端可以将 MCP 服务器作为本地子进程运行,并且通过标准输入/输出直接与它通信。**
 
-<font style="color:rgb(28, 30, 33);">该协议指定了两种类型的传输，这两种传输都受支持：</font>
-
-+ `HTTP`：客户端请求 SSE 通道以接收来自 server的工具url，然后通过 HTTP POST 请求发送命令。</font>
-+ `stdio`：客户端可以将 MCP 服务器作为</font>**<font style="color:rgb(28, 30, 33);">本地子进程</font>**<font style="color:rgb(28, 30, 33);">运行，并且通过标准输入/输出直接与它通信。</font>
-
-<font style="color:rgb(28, 30, 33);"></font>
-
-**<font style="color:rgb(28, 30, 33);">举例http</font>**
+**举例http**
 
 ```java
 McpTransport transport = new HttpMcpTransport.Builder()
@@ -448,16 +443,17 @@ public class Client {
 
 
 
-<h2 id="developing-the-tool-provider"><font style="color:rgb(28, 30, 33);">开发 Tool Provider</font></h2>
-<font style="color:rgb(28, 30, 33);">让我们创建一个名为 Java 的类，它使用 LangChain4j 连接到我们的 GitHub MCP 服务器。此类将：</font>`<font style="color:rgb(28, 30, 33);">McpGithubToolsExample</font>`
+<h2 id="developing-the-tool-provider">开发 Tool Provider</h2>
 
-+ <font style="color:rgb(28, 30, 33);">在 Docker 容器中启动 GitHub MCP 服务器（该命令位于</font>`docker` `/usr/local/bin/docker`<font style="color:rgb(28, 30, 33);">)</font>
-+ <font style="color:rgb(28, 30, 33);">使用 stdio 传输建立连接</font>
-+ <font style="color:rgb(28, 30, 33);">使用 LLM 总结 LangChain4j GitHub 仓库的最后 3 次提交</font>
+**让我们创建一个名为 Java 的类,它使用 LangChain4j 连接到我们的 GitHub MCP 服务器。此类将:**`McpGithubToolsExample`
+
++ **在 Docker 容器中启动 GitHub MCP 服务器(该命令位于 `docker` `/usr/local/bin/docker`)**
++ **使用 stdio 传输建立连接**
++ **使用 LLM 总结 LangChain4j GitHub 仓库的最后 3 次提交**
 
 **注意**：在下面的代码中，我们将 GitHub 令牌传入环境变量 .但对于不需要身份验证的公有仓库上的某些作，这是可选的。`GITHUB_PERSONAL_ACCESS_TOKEN`
 
-<font style="color:rgb(28, 30, 33);">这是实现：</font>
+**这是实现：**
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -668,12 +664,12 @@ public Assistant initAssistant(EmbeddingStore<TextSegment> embeddingStore,
 }
 ```
 
-<h1 id="caa99bdb"><font style="color:rgb(28, 30, 33);">可定制的 HTTP 客户端</font></h1>
-<font style="color:rgb(28, 30, 33);">有 2 种开箱即用的实现：</font>
+<h1 id="caa99bdb">可定制的 HTTP 客户端</h1>
 
-+ `JdkHttpClient` 在模块中。 当使用支持的模块（例如 ）时，默认情况下会使用它。</font>
+**有 2 种开箱即用的实现:**
 
-+ `SpringRestClient` 当使用受支持模块的 Spring Boot starter时，默认情况下使用它。</font>
++ **`JdkHttpClient` 在模块中。 当使用支持的模块(例如 )时,默认情况下会使用它。**
++ **`SpringRestClient` 当使用受支持模块的 Spring Boot starter时,默认情况下使用它。**
 
 ```java
 HttpClient.Builder httpClientBuilder = HttpClient.newBuilder()
@@ -799,4 +795,3 @@ ChatLanguageModel model = OpenAiChatModel.builder()
 
 model.chat("Tell me a joke about Java");
 ```
-
