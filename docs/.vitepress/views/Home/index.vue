@@ -32,6 +32,7 @@
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup lang="ts">
@@ -40,6 +41,8 @@ import EmojiBackground from '../../components/EmojiBackground/index.vue';
 import { RiGithubLine } from '@remixicon/vue';
 import { useRouter } from 'vitepress';
 import { Vue3Lottie } from 'vue3-lottie';
+import Footer from '../../components/Footer.vue'; // 添加这行导入
+
 import lottieData from '../../assets/dora.json';
 
 const returnToTopRef = ref<HTMLElement | null>(null);

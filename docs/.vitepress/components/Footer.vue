@@ -5,10 +5,10 @@
   >
     <p class="text-sm font-medium">{{ footer.copyright }}</p>
     <p class="text-sm font-medium">
-      Theme |
+      ICP证 |
       <LinkText
-        text="Easy-Vitepress-Blog"
-        link="https://github.com/ZbWeR/easy-vitepress-blog"
+        text="粤ICP备2026005826号-1"
+        link="https://beian.miit.gov.cn/"
         :icon="RiExternalLinkLine"
       />
     </p>

@@ -31,7 +31,7 @@ export default defineConfig({
     socialLinks: [{ icon: 'github', link: 'https://github.com/ZHAN-jin-yu' }],
     // 首页底部版权声明
     footer: {
-      copyright: 'Copyright © 2024-present ZHAN'
+      copyright: '© 2025-present ZHAN'
     },
     // 文章内导航栏标题
     outlineTitle: '导航栏'
