@@ -23,12 +23,6 @@ types:
       MQ 相关知识整理
     link: /Notes/MQ/
     icon: "\U0001F4EC"
-  - name: 工作记录
-    desc: |-
-      Work notes
-      工作中的踩坑与总结
-    link: /Notes/work/
-    icon: "\U0001F4BC"
   - name: 基础
     desc: |-
       计算机基础
@@ -71,7 +65,7 @@ types:
       面试经验与题目整理
     link: /Notes/面经/
     icon: "\U0001F4DD"
-updateTime: '2025-12-22 01:12'
+updateTime: '2026-01-22 14:20'
 tags: Notes
 ---
 
