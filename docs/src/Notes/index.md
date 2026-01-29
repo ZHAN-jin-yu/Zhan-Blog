@@ -5,6 +5,12 @@ hero:
   title: Blogs
   subTitle: 平安喜乐
 types:
+  - name: 工作
+    desc: |-
+      Work notes
+      实习工作记录
+    link: /Notes/work/
+    icon: "\U0001F4BB"
   - name: AI
     desc: |-
       AI 笔记
@@ -65,7 +71,7 @@ types:
       面试经验与题目整理
     link: /Notes/面经/
     icon: "\U0001F4DD"
-updateTime: '2026-01-22 14:20'
+updateTime: '2026-01-29 21:40'
 tags: Notes
 ---
 
