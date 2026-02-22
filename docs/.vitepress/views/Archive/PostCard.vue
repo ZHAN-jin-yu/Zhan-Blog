@@ -5,7 +5,7 @@
   >
     <div class="w-full px-5">
       <div class="flex min-w-0 items-center justify-between gap-2">
-        <h1 class="whitespace-nowrap text-xl font-bold leading-8 tracking-tight">
+        <h1 class="truncate text-xl font-bold leading-8 tracking-tight">
           {{ getTitle(post) }}
         </h1>
         <div class="flex min-w-0 items-center gap-1 text-sm text-zinc-400">

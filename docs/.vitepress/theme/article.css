@@ -32,13 +32,13 @@
 .vp-doc h6 {
   color: var(--dora-text-indigo);
   letter-spacing: 0.1em;
-  @apply line-clamp-1;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .vp-doc h1 {
   padding-bottom: 0.5rem;
   border-bottom: 4px solid var(--dora-border-indigo);
-  width: fit-content;
   @apply transition-all duration-300;
 }
 .vp-doc h1:hover {
@@ -48,7 +48,6 @@
 .vp-doc h2 {
   margin-top: 10px;
   border-bottom: 3px solid var(--dora-border-indigo);
-  width: fit-content;
   padding-bottom: 4px;
   border-top: 0px solid var(--dora-border-indigo);
 }
