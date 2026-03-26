@@ -1,5 +1,5 @@
 ---
-updateTime: '2026-03-26 07:54'
+updateTime: '2026-03-26 08:17'
 tags: AI
 ---
 # learn-claude-code：Harness 工程学习笔记
@@ -176,3 +176,417 @@ def agent_loop(messages):
 > 相关项目：
 > - [Kode Agent CLI](https://github.com/shareAI-lab/Kode-cli) — 开源 Coding Agent，支持 GLM/MiniMax/DeepSeek
 > - [claw0](https://github.com/shareAI-lab/claw0) — 常驻 Agent Harness，支持心跳、Cron、IM 多渠道
+
+---
+
+## 八、`agents/` 目录逐文件源码解析
+
+> 以下是对仓库 `agents/` 目录中每个文件的代码级详细分析。
+
+---
+
+### s01 — `s01_agent_loop.py`：最小 Agent Loop
+
+**工具**：1 个（`bash`）
+
+**核心结构**：
+```python
+def agent_loop(messages):
+    while True:
+        response = client.messages.create(model=..., messages=messages, tools=TOOLS)
+        messages.append({"role": "assistant", "content": response.content})
+        if response.stop_reason != "tool_use":
+            return  # 模型决定停止
+        results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                output = run_bash(block.input["command"])
+                results.append({"type": "tool_result", "tool_use_id": block.id, "content": output})
+        messages.append({"role": "user", "content": results})
+```
+
+**关键细节**：
+- 危险命令黑名单：`rm -rf /`、`sudo`、`shutdown`、`reboot`、`> /dev/`
+- 子进程超时 120s，输出截断至 50000 字符
+- Loop 只有一个退出条件：`stop_reason != "tool_use"`，完全由模型决定
+
+---
+
+### s02 — `s02_tool_use.py`：工具派发表
+
+**新增工具**：`read_file`、`write_file`、`edit_file`（共 4 个）
+
+**核心模式** — 分发表 `{tool_name: handler}`：
+
+```python
+TOOL_HANDLERS = {
+    "bash":       lambda **kw: run_bash(kw["command"]),
+    "read_file":  lambda **kw: run_read(kw["path"], kw.get("limit")),
+    "write_file": lambda **kw: run_write(kw["path"], kw["content"]),
+    "edit_file":  lambda **kw: run_edit(kw["path"], kw["old_text"], kw["new_text"]),
+}
+```
+
+**关键细节**：
+- `safe_path()` 使用 `Path.resolve()` + `is_relative_to()` 强制路径不能逃出 WORKDIR（防路径遍历）
+- `edit_file` 执行精确字符串替换（首次出现），找不到目标文本时返回 Error，不静默失败
+- **Loop 本身零变化**，只是工具数组变大了，印证核心口诀："添加工具只需添加一个 Handler"
+
+---
+
+### s03 — `s03_todo_write.py`：计划跟踪（TodoWrite + Nag）
+
+**新增工具**：`todo`（共 5 个）
+
+**TodoManager 约束**：
+- 最多 20 条任务
+- 同时只能有 1 个 `in_progress` 状态
+- 状态枚举：`pending / in_progress / completed`
+
+**Nag Reminder 机制**：
+
+```python
+rounds_since_todo = 0 if used_todo else rounds_since_todo + 1
+if rounds_since_todo >= 3:
+    results.insert(0, {"type": "text", "text": "<reminder>Update your todos.</reminder>"})
+```
+
+连续 3 轮没有调用 `todo` 工具，就在下一轮 tool_result 前注入提醒，迫使模型更新进度。
+
+**价值**：人类可以实时观察 Agent 的规划进度，知道它卡在哪个步骤。
+
+---
+
+### s04 — `s04_subagent.py`：子 Agent（上下文隔离）
+
+**新增工具**：父 Agent 专属 `task`（子 Agent 无此工具，防止递归嵌套）
+
+**核心机制**：
+
+```python
+def run_subagent(prompt: str) -> str:
+    sub_messages = [{"role": "user", "content": prompt}]  # 全新上下文
+    for _ in range(30):  # 安全上限
+        response = client.messages.create(model=MODEL, system=SUBAGENT_SYSTEM,
+                                          messages=sub_messages, tools=CHILD_TOOLS)
+        ...loop...
+    # 只返回最后一条文本，子 Agent 上下文被丢弃
+    return "".join(b.text for b in response.content if hasattr(b, "text"))
+```
+
+| 维度 | 父 Agent | 子 Agent |
+|------|----------|----------|
+| 上下文 | 全量历史 | 全新 `messages=[]` |
+| 文件系统 | 共享 | 共享 |
+| 返回值 | 完整状态 | 只有文本摘要 |
+| 工具 | 含 `task` | 不含 `task` |
+
+---
+
+### s05 — `s05_skill_loading.py`：技能按需加载
+
+**新增工具**：`load_skill`
+
+**两层注入策略**：
+
+| 层 | 位置 | 内容 | Token 代价 |
+|----|------|------|------------|
+| Layer 1 | System Prompt | 技能名 + 简短描述 | ~100 tokens/skill |
+| Layer 2 | `tool_result` | 完整 `SKILL.md` 内容 | 按需 |
+
+```
+skills/pdf/SKILL.md          <- YAML frontmatter + body
+skills/code-review/SKILL.md
+
+System Prompt:
+  Skills available:
+    - pdf: Process PDF files...      <- 只注入元数据
+    - code-review: Review code...
+
+模型调用 load_skill("pdf") ->
+  tool_result: <skill name="pdf">完整步骤...</skill>  <- 按需注入全文
+```
+
+**核心原则**：**不要把所有知识塞进 System Prompt，按需拉取**。
+
+---
+
+### s06 — `s06_context_compact.py`：三层上下文压缩
+
+**新增工具**：`compact`（手动触发）
+
+**三层流水线**：
+
+**Layer 1 — `micro_compact`（静默，每轮 Loop 前执行）**
+- 扫描全部 `tool_result`，保留最近 3 个，旧的替换为 `[Previous: used {tool_name}]`
+- 不调用 LLM，零开销
+
+**Layer 2 — `auto_compact`（token 估算 > 50000 时自动触发）**
+- 把完整对话保存到 `.transcripts/transcript_{timestamp}.jsonl`
+- 调用 LLM 生成摘要（完成内容 / 当前状态 / 关键决策）
+- 压缩为 2 条消息：`[summary + transcript_path]` + `"Understood."`
+
+**Layer 3 — `compact` 工具（模型主动触发）**
+- 与 auto_compact 逻辑相同，模型可主动决定压缩时机
+
+```python
+def agent_loop(messages):
+    while True:
+        micro_compact(messages)                           # Layer 1
+        if estimate_tokens(messages) > THRESHOLD:
+            messages[:] = auto_compact(messages)          # Layer 2
+        response = client.messages.create(...)
+        ...
+        if manual_compact:
+            messages[:] = auto_compact(messages)          # Layer 3
+```
+
+token 估算：`len(str(messages)) // 4`（粗估，约 4 字符/token）。
+
+---
+
+### s07 — `s07_task_system.py`：持久化任务系统（带依赖图）
+
+**新增工具**：`task_create`、`task_update`、`task_list`、`task_get`（共 8 个）
+
+**任务图结构**：
+```
+.tasks/
+  task_1.json  {"id":1, "status":"completed", "blockedBy":[], "blocks":[2]}
+  task_2.json  {"id":2, "status":"pending",   "blockedBy":[1], "blocks":[3]}
+  task_3.json  {"id":3, "status":"pending",   "blockedBy":[2], "blocks":[]}
+```
+
+**依赖关系自动维护**：
+
+```python
+def update(self, task_id, status=None, add_blocked_by=None, add_blocks=None):
+    if status == "completed":
+        self._clear_dependency(task_id)  # 从所有任务的 blockedBy 中移除
+    if add_blocks:
+        # 双向绑定：A blocks B => B.blockedBy 也自动加入 A
+        for blocked_id in add_blocks:
+            blocked["blockedBy"].append(task_id)
+```
+
+**关键价值**：任务以 JSON 文件形式存在磁盘，独立于对话上下文，**压缩后目标不丢失**。
+
+---
+
+### s08 — `s08_background_tasks.py`：后台任务（非阻塞执行）
+
+**新增工具**：`background_run`、`check_background`（共 6 个）
+
+**核心机制** — 守护线程 + 通知队列：
+
+```python
+class BackgroundManager:
+    def run(self, command: str) -> str:
+        task_id = str(uuid.uuid4())[:8]
+        thread = threading.Thread(target=self._execute, args=(task_id, command), daemon=True)
+        thread.start()
+        return f"Background task {task_id} started"  # 立即返回，不阻塞
+
+    def _execute(self, task_id, command):
+        ...subprocess.run(...)...
+        self._notification_queue.append({...})  # 完成后推入队列
+
+    def drain_notifications(self) -> list:
+        # 每次 LLM 调用前清空，把结果注入 messages
+```
+
+后台任务完成通知在**下一个 LLM 调用前**注入，模型在等待期间可以继续做其他工作。后台超时 300s（比前台 bash 的 120s 更宽松）。
+
+---
+
+### s09 — `s09_agent_teams.py`：持久化 Agent 团队
+
+**新增工具**：`spawn_teammate`、`list_teammates`、`send_message`、`read_inbox`、`broadcast`（共 9 个）
+
+**与 s04 子 Agent 的本质区别**：
+
+| | 子 Agent（s04） | 队友（s09） |
+|-|-----------------|-------------|
+| 生命周期 | spawn → 完成 → 销毁 | spawn → 工作 → 空闲 → 工作 → ... |
+| 通信 | 只返回摘要 | JSONL 邮箱双向通信 |
+| 上下文 | 一次性 | 持久保留 |
+
+**文件结构**：
+```
+.team/config.json          <- 成员注册表（name/role/status）
+.team/inbox/
+  alice.jsonl              <- 追加写入，读取时清空（drain 语义）
+  bob.jsonl
+  lead.jsonl
+```
+
+**5 种消息类型**：`message / broadcast / shutdown_request / shutdown_response / plan_approval_response`
+
+每个队友在独立线程中运行自己的 agent_loop，收件箱消息在每轮循环开头注入 messages。
+
+---
+
+### s10 — `s10_team_protocols.py`：团队协议（FSM 握手）
+
+**新增工具**：`shutdown_request`、`shutdown_response`、`plan_approval`（共 12 个）
+
+**两个协议，同一个 `request_id` 关联模式**：
+
+**Shutdown 协议（状态机：pending → approved / rejected）**：
+
+```
+Lead                           Teammate
+  shutdown_request(req_id) ──→  收到 shutdown_request
+                                 shutdown_response(req_id, approve=True)
+                           ←──
+  shutdown_requests[req_id] = "approved"
+  → 队友线程退出
+```
+
+**Plan Approval 协议**：
+
+```
+Teammate                       Lead
+  plan_approval(plan="...")  ──→  收到计划
+                                   plan_approval_response(req_id, approve, feedback)
+                           ←──
+  根据 approve 决定是否继续执行
+```
+
+`_tracker_lock` 线程锁保证并发安全，两个协议复用同一套 request_id 关联机制，可扩展到任意需要握手确认的场景。
+
+---
+
+### s11 — `s11_autonomous_agents.py`：自主 Agent（主动认领任务）
+
+**新增工具**：`idle`、`claim_task`（共 14 个）
+
+**工作 / 空闲双阶段循环**：
+
+```
+WORK 阶段（标准 agent_loop）
+    │
+    │  stop_reason != "tool_use" 或 模型调用 idle 工具
+    ↓
+IDLE 阶段（每 5s 轮询，最多 60s）
+    │
+    ├─ 收件箱有消息？→ 注入 messages → 恢复 WORK
+    │
+    ├─ .tasks/ 有无主未阻塞的 pending 任务？
+    │     → claim_task（加 _claim_lock 防竞争）
+    │     → 注入 <auto-claimed>Task #N: ...</auto-claimed>
+    │     → 恢复 WORK
+    │
+    └─ 超时（60s）→ status = "shutdown" → 线程退出
+```
+
+**身份再注入**（防压缩后失忆）：
+
+```python
+def make_identity_block(name, role, team_name) -> dict:
+    return {
+        "role": "user",
+        "content": f"<identity>You are '{name}', role: {role}, team: {team_name}. Continue your work.</identity>",
+    }
+```
+
+当 `messages` 长度 ≤ 3（被压缩过）时，自动在开头插入身份块，让 Agent 知道自己是谁。
+
+---
+
+### s12 — `s12_worktree_task_isolation.py`：Worktree + 任务隔离
+
+**新增工具**：`worktree_create/list/status/run/keep/remove`、`worktree_events`（共 16 个）
+
+**控制面（Task）与执行面（Worktree）绑定**：
+
+```
+.tasks/task_12.json
+  { "id": 12, "subject": "Implement auth refactor",
+    "status": "in_progress", "worktree": "auth-refactor" }
+
+.worktrees/index.json
+  { "name": "auth-refactor",
+    "path": ".../.worktrees/auth-refactor",  <- 独立目录
+    "branch": "wt/auth-refactor",            <- 独立 git 分支
+    "task_id": 12, "status": "active" }
+```
+
+**三个核心类**：
+- **`TaskManager`**：CRUD 任务，支持 `bind_worktree` / `unbind_worktree`
+- **`WorktreeManager`**：封装 `git worktree add/remove`，维护 index.json，提供 `run(name, command)` 在指定目录执行命令
+- **`EventBus`**：追加式 JSONL 事件日志，记录 `worktree.create.before/after/failed`、`worktree.remove.before/after`、`task.completed` 等生命周期事件
+
+**Worktree 生命周期**：
+
+```
+worktree_create  →  worktree_run（在隔离目录执行工作）
+               →  worktree_keep（保留分支，待后续合并）
+               或  worktree_remove(complete_task=True)（删除目录 + 标记任务完成）
+```
+
+分支命名规范 `wt/{name}` 由代码强制，名称校验正则：`[A-Za-z0-9._-]{1,40}`。
+
+---
+
+### s_full — `s_full.py`：终章，全机制整合
+
+Capstone 文件，将 s01–s11 所有机制合并为一个完整 Agent（s12 worktree 机制独立教学，未合入）。
+
+**每个 LLM 调用前的 4 步前置检查**：
+
+```python
+def agent_loop(messages):
+    while True:
+        micro_compact(messages)                           # 1. Layer 1 压缩
+        if estimate_tokens(messages) > 100000:
+            messages[:] = auto_compact(messages)          # 2. Layer 2 压缩（阈值翻倍至 100k）
+        notifs = BG.drain_notifications()                 # 3. 注入后台任务结果
+        if notifs: messages.append(...)
+        inbox = BUS.read_inbox("lead")                    # 4. 注入收件箱消息
+        if inbox: messages.append(...)
+        response = client.messages.create(...)
+```
+
+**完整工具集（25+ 个）**：
+
+| 类别 | 工具 |
+|------|------|
+| 基础 I/O | `bash / read_file / write_file / edit_file` |
+| 计划 | `todo`（含 Nag Reminder） |
+| 子 Agent | `task`（Explore/Write 两种类型） |
+| 知识 | `load_skill` |
+| 压缩 | `compact` |
+| 持久任务 | `task_create / task_update / task_list / task_get` |
+| 后台执行 | `background_run / check_background` |
+| 团队 | `spawn_teammate / list_teammates / send_message / read_inbox / broadcast` |
+| 协议 | `shutdown_request / shutdown_response / plan_approval` |
+| 自主 | `idle / claim_task` |
+
+**REPL 快捷命令**：`/compact`、`/tasks`、`/team`、`/inbox`
+
+---
+
+### 各 Session 工具数量汇总
+
+| Session | 新增机制 | 新增工具 | 累计工具 |
+|---------|----------|----------|----------|
+| s01 | 最小 Loop | 1 | 1 |
+| s02 | 工具派发表 | 3 | 4 |
+| s03 | TodoWrite + Nag | 1 | 5 |
+| s04 | 子 Agent（上下文隔离） | 1（父）| 5+1 |
+| s05 | 技能按需加载 | 1 | 5 |
+| s06 | 三层压缩 | 1 | 5 |
+| s07 | 持久化任务图 | 4 | 8 |
+| s08 | 后台线程 + 通知队列 | 2 | 6 |
+| s09 | 团队邮箱 | 5 | 9 |
+| s10 | Shutdown + Plan 协议 | 3 | 12 |
+| s11 | 自主空闲轮询 + 认领 | 2 | 14 |
+| s12 | Worktree 隔离 + 事件总线 | 8 | 16 |
+
+**贯穿始终的工程原则**：
+1. **Loop 不变**，每次只在外围加一层机制
+2. **工具是原子的**，每个工具做且仅做一件事
+3. **状态外置**，任务/邮箱/技能/transcript 全在磁盘，不依赖对话历史
+4. **危险防护一致**，黑名单命令 + 路径逃逸检测贯穿所有文件
+5. **并发安全**，凡多线程写同一资源，一律加 Lock
