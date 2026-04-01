@@ -1,10 +1,11 @@
 ---
-updateTime: '2026-03-26 08:17'
+updateTime: '2026-04-02 01:06'
 tags: AI
 ---
 # learn-claude-code：Harness 工程学习笔记
 
 > 仓库地址：[shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code)
+> [推荐学习网站](https://learn.shareai.run/zh/) 
 
 ## 一、核心观点：模型即 Agent
 
